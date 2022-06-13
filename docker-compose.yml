@@ -1,0 +1,19 @@
+version: '3.9'
+#      test: [ "CMD", "curl", "-f", "http://127.0.0.1:8082/actuator/health" ]
+
+services:
+  demo:
+    image: wnow20/demo:v1
+    volumes:
+      - /Users/ge/docker-files/demo/logs:/home/admin/logs
+    environment:
+      - SPRING_PROFILES_ACTIVE=production
+    ports:
+      - 8080:8080
+      - 8082:8082
+    healthcheck:
+      test: "curl --fail --silent http://127.0.0.1:8082/actuator/health | grep UP || exit 1"
+      interval: 1s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
